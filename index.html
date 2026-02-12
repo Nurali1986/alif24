@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alif24 — AI Ta'lim Platformasi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #6366F1;
+      --primary-dark: #3730A3;
+      --accent: #F59E0B;
+      --accent2: #10B981;
+      --danger: #EF4444;
+      --bg: #F8F7FF;
+      --card: #FFFFFF;
+      --text: #1E1B4B;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: rgba(255,255,255,0.97);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--border);
+      padding: 0 3%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; gap: 1.5rem;
+    }
+    .nav-logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800; font-size: 1.4rem;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.2rem; list-style: none; flex-wrap: wrap; }
+    .nav-links a {
+      text-decoration: none; color: var(--text);
+      font-weight: 600; font-size: 0.88rem;
+      transition: color 0.2s; white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      background: var(--primary); color: #fff;
+      padding: 0.5rem 1.2rem; border-radius: 50px;
+      font-weight: 700; font-size: 0.85rem;
+      text-decoration: none; transition: background 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #312E81 0%, #4F46E5 45%, #7C3AED 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; padding: 0.4rem 1rem; border-radius: 50px;
+      font-size: 0.85rem; font-weight: 700;
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.7s ease both;
+    }
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      font-weight: 800; color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+      animation: fadeDown 0.7s 0.1s ease both;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, #FCD34D, #F59E0B);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      color: rgba(255,255,255,0.85); max-width: 620px;
+      margin: 0 auto 2.5rem; line-height: 1.7;
+      animation: fadeDown 0.7s 0.2s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeDown 0.7s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--accent); color: #1a1200;
+      padding: 0.85rem 2.2rem; border-radius: 50px;
+      font-weight: 800; font-size: 1rem;
+      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(245,158,11,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.5); }
+    .btn-outline {
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.5);
+      color: #fff; padding: 0.85rem 2.2rem; border-radius: 50px;
+      font-weight: 700; font-size: 1rem;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.22); }
+
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+      margin-top: 4rem; animation: fadeDown 0.7s 0.4s ease both;
+    }
+    .hero-stat { color: #fff; }
+    .hero-stat .num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.2rem; font-weight: 800;
+      color: #FCD34D;
+    }
+    .hero-stat .label { font-size: 0.85rem; opacity: 0.8; margin-top: 0.1rem; }
+
+    .floating-shapes { position: absolute; inset: 0; pointer-events: none; }
+    .shape {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      animation: float 6s ease-in-out infinite;
+    }
+    .shape:nth-child(1) { width:200px;height:200px;top:10%;left:5%;animation-delay:0s; }
+    .shape:nth-child(2) { width:120px;height:120px;top:20%;right:8%;animation-delay:1.5s; }
+    .shape:nth-child(3) { width:80px;height:80px;bottom:25%;left:12%;animation-delay:3s; }
+    .shape:nth-child(4) { width:160px;height:160px;bottom:15%;right:6%;animation-delay:2s; }
+
+    /* ── PROBLEM ───────────────────────────────────────── */
+    .section { padding: 90px 5%; max-width: 1200px; margin: 0 auto; }
+    .section-tag {
+      display: inline-block;
+      background: #EDE9FE; color: var(--primary);
+      padding: 0.3rem 1rem; border-radius: 50px;
+      font-size: 0.82rem; font-weight: 800;
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .section-tag.red { background: #FEE2E2; color: #DC2626; }
+    .section-tag.green { background: #D1FAE5; color: #059669; }
+    .section-tag.amber { background: #FEF3C7; color: #D97706; }
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 600px; line-height: 1.8;
+    }
+
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .problem-card {
+      background: #fff; border-radius: 20px;
+      padding: 2rem; border: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .problem-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+    .problem-icon {
+      font-size: 2.5rem; margin-bottom: 1rem;
+    }
+    .problem-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .problem-card p { color: var(--muted); font-size: 0.95rem; line-height: 1.7; }
+
+    /* ── SOLUTION ───────────────────────────────────────── */
+    .solution-bg {
+      background: linear-gradient(135deg, #312E81 0%, #4F46E5 100%);
+      border-radius: 32px; padding: 70px 60px;
+      color: #fff; margin: 90px 5%;
+    }
+    .solution-bg .section-title { color: #fff; }
+    .solution-bg .section-desc { color: rgba(255,255,255,0.75); }
+    .solution-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem; margin-top: 2.5rem;
+    }
+    .solution-item {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px; padding: 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .sol-icon {
+      width: 48px; height: 48px; min-width: 48px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .solution-item h4 { font-size: 1rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .solution-item p { font-size: 0.9rem; opacity: 0.8; line-height: 1.6; }
+
+    /* ── PRODUCT ───────────────────────────────────────── */
+    .product-features {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .feature-card {
+      background: var(--card); border-radius: 20px;
+      padding: 2rem; border: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(79,70,229,0.12); }
+    .feature-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+    .feature-num {
+      font-size: 3rem; font-weight: 900;
+      color: #EDE9FE; line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .feature-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ── VIDEO ───────────────────────────────────────── */
+    .video-section {
+      background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+      padding: 80px 5%; text-align: center;
+    }
+    .video-section .section-tag { background: rgba(245,158,11,0.2); color: #FCD34D; }
+    .video-section .section-title { color: #fff; }
+    .video-section .section-desc { color: rgba(255,255,255,0.65); margin: 0 auto 2.5rem; }
+    .video-wrapper {
+      max-width: 900px; margin: 0 auto;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      border: 2px solid rgba(255,255,255,0.1);
+      background: #000;
+      
+    }
+
+
+    /* ── MARKET ───────────────────────────────────────── */
+    .market-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .market-card {
+      border-radius: 20px; padding: 2.5rem 2rem;
+      text-align: center; color: #fff;
+      position: relative; overflow: hidden;
+    }
+    .market-card.tam { background: linear-gradient(135deg, #4F46E5, #7C3AED); }
+    .market-card.sam { background: linear-gradient(135deg, #059669, #10B981); }
+    .market-card.som { background: linear-gradient(135deg, #D97706, #F59E0B); }
+    .market-card .market-tag {
+      font-size: 0.9rem; font-weight: 800;
+      opacity: 0.8; margin-bottom: 0.5rem;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .market-card .market-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.8rem; font-weight: 900;
+      line-height: 1; margin-bottom: 0.5rem;
+    }
+    .market-card p { font-size: 0.9rem; opacity: 0.85; line-height: 1.6; }
+
+    .market-demo {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 2.5rem;
+    }
+    .market-demo-card {
+      background: var(--card); border-radius: 20px;
+      padding: 2rem; border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .flag { font-size: 3rem; }
+    .market-demo-info .num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem; font-weight: 900; color: var(--primary);
+    }
+    .market-demo-info p { color: var(--muted); font-size: 0.9rem; }
+
+    /* ── BUSINESS MODEL ───────────────────────────────── */
+    .biz-bg {
+      background: linear-gradient(135deg, #064E3B 0%, #059669 100%);
+      border-radius: 32px; padding: 70px 60px;
+      color: #fff; margin: 90px 5%;
+    }
+    .biz-bg .section-title { color: #fff; }
+    .biz-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 2.5rem;
+    }
+    .biz-phase {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px; padding: 2rem;
+    }
+    .biz-phase-num {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .biz-phase h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; }
+    .biz-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .biz-row:last-child { border: none; }
+    .biz-row .label { font-size: 0.9rem; opacity: 0.8; }
+    .biz-row .val { font-weight: 800; font-size: 1rem; }
+
+    .unit-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-top: 1.5rem;
+    }
+    .unit-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 14px; padding: 1.2rem;
+      text-align: center;
+    }
+    .unit-card .u-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.8rem; font-weight: 900;
+      color: #6EE7B7;
+    }
+    .unit-card .u-label { font-size: 0.8rem; opacity: 0.75; margin-top: 0.2rem; }
+
+    /* ── TRACTION ─────────────────────────────────────── */
+    .traction-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .traction-card {
+      background: var(--card); border-radius: 20px;
+      padding: 2rem; text-align: center;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      transition: transform 0.3s;
+    }
+    .traction-card:hover { transform: translateY(-5px); }
+    .traction-card .t-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem; font-weight: 900;
+      color: var(--primary); line-height: 1;
+    }
+    .traction-card .t-label { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.5; }
+
+    /* ── COMPETITION ──────────────────────────────────── */
+    .comp-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .comp-card {
+      background: var(--card); border-radius: 20px;
+      padding: 1.8rem; text-align: center;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .comp-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .comp-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .comp-card h4 { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .comp-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+    .comp-badge {
+      display: inline-block;
+      background: #FEE2E2; color: #DC2626;
+      font-size: 0.75rem; font-weight: 700;
+      padding: 0.2rem 0.6rem; border-radius: 50px;
+      margin-top: 0.6rem;
+    }
+    .comp-badge.us { background: #D1FAE5; color: #059669; }
+
+    /* ── TEAM ────────────────────────────────────────── */
+    .team-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .team-card {
+      background: var(--card); border-radius: 20px;
+      padding: 2rem; text-align: center;
+      border: 1px solid var(--border);
+      transition: transform 0.3s;
+    }
+    .team-card:hover { transform: translateY(-5px); }
+    .team-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #7C3AED);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin: 0 auto 1rem;
+    }
+    .team-card h4 { font-weight: 800; font-size: 1rem; margin-bottom: 0.3rem; }
+    .team-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
+
+    /* ── ASK ────────────────────────────────────────── */
+    .ask-section {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4F46E5 100%);
+      padding: 90px 5%; text-align: center;
+    }
+    .ask-section .section-tag { background: rgba(245,158,11,0.2); color: #FCD34D; }
+    .ask-section .section-title { color: #fff; }
+    .ask-section .section-desc { color: rgba(255,255,255,0.7); margin: 0 auto 2.5rem; }
+    .ask-total {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 900; color: #FCD34D;
+      margin: 1rem 0;
+    }
+    .fund-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 1rem; max-width: 900px; margin: 2rem auto;
+    }
+    .fund-item {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px; padding: 1.2rem 0.8rem;
+      color: #fff; text-align: center;
+    }
+    .fund-item .f-pct {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.6rem; font-weight: 900;
+      color: #FCD34D;
+    }
+    .fund-item .f-amt { font-size: 0.95rem; font-weight: 700; margin: 0.2rem 0; }
+    .fund-item .f-label { font-size: 0.75rem; opacity: 0.7; }
+
+    /* ── CTA ────────────────────────────────────────── */
+    .cta-section {
+      background: var(--bg); padding: 90px 5%; text-align: center;
+    }
+    .cta-section .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+    .btn-cta-primary {
+      background: var(--primary); color: #fff;
+      padding: 1rem 2.5rem; border-radius: 50px;
+      font-weight: 800; font-size: 1.05rem;
+      text-decoration: none; transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(79,70,229,0.35);
+    }
+    .btn-cta-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(79,70,229,0.5); }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: #0F172A; color: rgba(255,255,255,0.7);
+      padding: 2.5rem 5%; text-align: center;
+      font-size: 0.9rem;
+    }
+    footer .f-logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem; font-weight: 800;
+      color: #fff; margin-bottom: 0.5rem;
+    }
+    footer .f-logo span { color: var(--accent); }
+
+    /* ── ANIMATIONS ──────────────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-20px); }
+    }
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+    }
+    @media (max-width: 900px) {
+      .problem-grid, .product-features, .market-cards,
+      .traction-grid, .comp-grid, .team-grid { grid-template-columns: 1fr 1fr; }
+      .solution-grid, .biz-grid { grid-template-columns: 1fr; }
+      .fund-grid { grid-template-columns: repeat(3, 1fr); }
+      .market-demo { grid-template-columns: 1fr; }
+      .solution-bg, .biz-bg { padding: 50px 30px; margin: 60px 3%; }
+    }
+    @media (max-width: 580px) {
+      .problem-grid, .product-features, .market-cards,
+      .traction-grid, .comp-grid, .team-grid { grid-template-columns: 1fr; }
+      .fund-grid { grid-template-columns: 1fr 1fr; }
+      .hero-stats { gap: 2rem; }
+      .unit-cards { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">alif<span>24</span>.uz</div>
+  <ul class="nav-links">
+    <li><a href="#problem">Muammo</a></li>
+    <li><a href="#solution">Yechim</a></li>
+    <li><a href="#product">Mahsulot</a></li>
+    <li><a href="#market">Bozor</a></li>
+    <li><a href="#bizmodel">Biznes model</a></li>
+    <li><a href="#traction">Traction</a></li>
+    <li><a href="#competition">Raqobat</a></li>
+    <li><a href="#team">Jamoa</a></li>
+    <li><a href="#ask">The Ask</a></li>
+  </ul>
+  <a href="#video" class="nav-cta">Demo ko'rish</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+  <div style="position:relative;z-index:1;">
+    <div class="hero-badge">🤖 AI-powered · EdTech · Uzbekistan</div>
+    <h1>Bolalarning gadjetlar bilan<br>o'tkazadigan vaqtini<br><span class="highlight">foydali ta'limga aylantiring</span></h1>
+    <p>alif24.uz — suniy ong asosida ishlaydigan interaktiv ta'lim platformasi. 4–8 yoshli bolalar uchun o'yin orqali o'rganish.</p>
+    <div class="hero-btns">
+      <a href="#video" class="btn-primary">🎬 Demo ko'rish</a>
+      <a href="#product" class="btn-outline">Mahsulot haqida</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">100+</div><div class="label">Bolada sinovdan o'tdi</div></div>
+      <div class="hero-stat"><div class="num">90%</div><div class="label">Ota-onalar mamnun</div></div>
+      <div class="hero-stat"><div class="num">2.3M</div><div class="label">Maqsadli auditoriya (UZ)</div></div>
+      <div class="hero-stat"><div class="num">$10M</div><div class="label">Bozor hajmi (UZ EdTech)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<div class="section fade-up" id="problem">
+  <div class="section-tag red">Muammo</div>
+  <h2 class="section-title">Bolalar vaqtlarini<br>befoyda sarflayapti</h2>
+  <p class="section-desc">Ko'pgina bolalar asosiy vaqtni telefon va kompyuterlarda o'yin o'ynash va video tomosha qilishga sarflaydi.</p>
+  <div class="problem-grid">
+    <div class="problem-card fade-up">
+      <div class="problem-icon">📱</div>
+      <h3>Gadjetlarda o'yin</h3>
+      <p>Ko'pgina bolalar asosiy vaqtni telefon va kompyuterlarda foydasz o'yin o'ynashga sarflaydi.</p>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-icon">🎥</div>
+      <h3>Video tomosha qilish</h3>
+      <p>Ta'limiy bo'lmagan videolar bolalarning fikrlash qobiliyatini pasaytiradi va diqqatni kamaytiradi.</p>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-icon">🤖</div>
+      <h3>AI bilan uy vazifasi</h3>
+      <p>O'quvchilar uy vazifalarini o'zi o'qimasdan AI orqali bajarib qo'ymoqda — bu bilim emas.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUTION -->
+<div class="solution-bg fade-up" id="solution">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-tag" style="background:rgba(245,158,11,0.2);color:#FCD34D;">Yechim</div>
+    <h2 class="section-title">AI yordamida o'yin orqali o'rganish</h2>
+    <p class="section-desc">Platformada bolalarga qisqa hikoya va ertaklar berilib, ularni eshitganligi yoki o'qiganligi uchun sovg'a va mukofotlar beriladi.</p>
+    <div class="solution-grid">
+      <div class="solution-item">
+        <div class="sol-icon">📖</div>
+        <div>
+          <h4>Hikoya va ertaklar</h4>
+          <p>Bola hikoya va ertaklarni eshitadi yoki o'qiydi — so'ng AI savollar berib tushunganligini tekshiradi.</p>
+        </div>
+      </div>
+      <div class="solution-item">
+        <div class="sol-icon">🎁</div>
+        <div>
+          <h4>Mukofot tizimi</h4>
+          <p>O'qiganligi uchun sovg'a va pul mukofotlar beriladi — ichki motivatsiyani kuchaytiradi.</p>
+        </div>
+      </div>
+      <div class="solution-item">
+        <div class="sol-icon">🎮</div>
+        <div>
+          <h4>AI o'yinlari</h4>
+          <p>Suniy ongga asoslangan o'yinlar bilan ta'limga bo'lgan qiziqishini kuchaytirish.</p>
+        </div>
+      </div>
+      <div class="solution-item">
+        <div class="sol-icon">📊</div>
+        <div>
+          <h4>Doimiy monitoring</h4>
+          <p>Suniy ong bolaning rivojlanishini doimiy kuzatib boradi va ota-onalar bilan o'qituvchilarga hisobot beradi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT -->
+<div class="section fade-up" id="product">
+  <div class="section-tag">Mahsulot</div>
+  <h2 class="section-title">Nima qila oladi?</h2>
+  <p class="section-desc">Platforma AI orqali interaktiv darslar beradi — bolaga hikoya o'qib beradi, harflar va sonlarni o'rgatadi, mini-o'yinlar orqali bilimni mustahkamlaydi.</p>
+  <div class="product-features">
+    <div class="feature-card fade-up">
+      <div class="feature-num">01</div>
+      <h3>Harflar & So'zlar</h3>
+      <p>Bolaga harfni tanitadi va o'sha harfdan boshlanadigan so'zlarni aytishini so'raydi. Harflarga oid o'yinlar o'ynaydi.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-num">02</div>
+      <h3>O'qish monitoringi</h3>
+      <p>Bolaga o'qish berilgan vazifani tinglaydi, nechta so'z o'qiganligini, o'qish tezligini va savollarga javobini hisobot qilib beradi.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-num">03</div>
+      <h3>Matematika yordamchisi</h3>
+      <p>Bolaga matematikadan masalalar yechishda yordam beradi — AI qadamma-qadam tushuntiradi.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-num">04</div>
+      <h3>Musobaqalar & Sovg'alar</h3>
+      <p>O'qituvchi, o'quv markazi va biz tomonimizdan o'qish va bilimlarni tekshirish maqsadida musobaqalar tashkil etiladi, bolalarga sovg'alar beriladi.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-num">05</div>
+      <h3>CRM tizimi</h3>
+      <p>O'quv markazlari va o'qituvchilar uchun CRM tizimi bo'ladi — u orqali sinflar va o'quvchilar boshqariladi.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-num">06</div>
+      <h3>AI tahlil & hisobot</h3>
+      <p>Bolaning rivojlanishini tahlil qiladi, o'qituvchi va ota-onalarga yetkazadi — hech narsa e'tibordan chetda qolmaydi.</p>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<section class="video-section fade-up" id="video">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="section-tag">Demo</div>
+    <h2 class="section-title" style="color:#fff;">Platformani ko'ring</h2>
+    <p class="section-desc">alif24.uz qanday ishlashini o'z ko'zingiz bilan tomosha qiling.</p>
+    <div class="video-wrapper">
+      <a href="https://alif24.uz" target="_blank">
+        <img src="alif.png" alt="Alif24 Demo" style="width: 100%; height: auto; border-radius: 20px;">
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET SIZE -->
+<div class="section fade-up" id="market">
+  <div class="section-tag amber">Bozor hajmi</div>
+  <h2 class="section-title">EdTech bozori imkoniyati</h2>
+  <p class="section-desc">Dunyo bo'yicha $180–200B hajmidagi bozorda Uzbekiston EdTech segmentidan boshlayapmiz.</p>
+  <div class="market-cards">
+    <div class="market-card tam fade-up">
+      <div class="market-tag">TAM — Dunyo</div>
+      <div class="market-num">$180–200B</div>
+      <p>Global EdTech bozori. 4–8 yoshli 1.7 milliard bola.</p>
+    </div>
+    <div class="market-card sam fade-up">
+      <div class="market-tag">SAM — Uzbekiston</div>
+      <div class="market-num">$10M</div>
+      <p>O'zbekiston EdTech bozori. 4–7 yoshli 2.3 million bola.</p>
+    </div>
+    <div class="market-card som fade-up">
+      <div class="market-tag">SOM — Hozir</div>
+      <div class="market-num">$1M</div>
+      <p>Birinchi bosqichda jalb qilinadigan 20,000 bola.</p>
+    </div>
+  </div>
+  <div class="market-demo">
+    <div class="market-demo-card fade-up">
+      <div class="flag">🌍</div>
+      <div class="market-demo-info">
+        <div class="num">1.7 Mlrd</div>
+        <p>Dunyo bo'yicha 4–8 yoshli bolalar soni</p>
+      </div>
+    </div>
+    <div class="market-demo-card fade-up">
+      <div class="flag">🇺🇿</div>
+      <div class="market-demo-info">
+        <div class="num">2.3 Mln</div>
+        <p>O'zbekistonda 4–7 yoshli bolalar soni</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUSINESS MODEL -->
+<div class="biz-bg fade-up" id="bizmodel">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-tag" style="background:rgba(110,231,183,0.2);color:#6EE7B7;">Biznes Model</div>
+    <h2 class="section-title">2 bosqichli strategiya</h2>
+    <div class="biz-grid">
+      <div class="biz-phase">
+        <div class="biz-phase-num">1</div>
+        <h3>B2B — O'quv markazlari (1–6 oy)</h3>
+        <div class="biz-row"><span class="label">O'quv markazi uchun</span><span class="val">$50–200/oy</span></div>
+        <div class="biz-row"><span class="label">Bola uchun (markaz orqali)</span><span class="val">$4/oy</span></div>
+        <div class="biz-row"><span class="label">Maqsad: 2000 bola, MRR</span><span class="val">$100K+</span></div>
+      </div>
+      <div class="biz-phase">
+        <div class="biz-phase-num">2</div>
+        <h3>B2C — Ota-onalar & O'qituvchilar (6–12 oy)</h3>
+        <div class="biz-row"><span class="label">Individual (oylik)</span><span class="val">$5/oy</span></div>
+        <div class="biz-row"><span class="label">O'qituvchi (oylik)</span><span class="val">$20+/oy</span></div>
+        <div class="biz-row"><span class="label">ARPU (yillik)</span><span class="val">$60</span></div>
+      </div>
+    </div>
+    <div class="unit-cards">
+      <div class="unit-card">
+        <div class="u-num">$30</div>
+        <div class="u-label">LTV (1 yil)</div>
+      </div>
+      <div class="unit-card">
+        <div class="u-num">$8–10</div>
+        <div class="u-label">CAC</div>
+      </div>
+      <div class="unit-card">
+        <div class="u-num">3×</div>
+        <div class="u-label">LTV / CAC</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRACTION -->
+<div class="section fade-up" id="traction">
+  <div class="section-tag green">Traction</div>
+  <h2 class="section-title">Allaqachon natijalar bor</h2>
+  <p class="section-desc">Haqiqiy bolalar va o'quv markazlari bilan sinovdan o'tkazilgan — ota-onalar juda mamnun!</p>
+  <div class="traction-grid">
+    <div class="traction-card fade-up">
+      <div class="t-num">100+</div>
+      <div class="t-label">Bolada sinovdan o'tkazildi</div>
+    </div>
+    <div class="traction-card fade-up">
+      <div class="t-num">2</div>
+      <div class="t-label">O'qituvchi bilan hamkorlik (faol foydalanish)</div>
+    </div>
+    <div class="traction-card fade-up">
+      <div class="t-num">2</div>
+      <div class="t-label">O'quv markazi: 4K English, EngPlanet</div>
+    </div>
+    <div class="traction-card fade-up">
+      <div class="t-num">90%</div>
+      <div class="t-label">Ota-onalar platformani yaxshi baholadi</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPETITION -->
+<div class="section fade-up" id="competition">
+  <div class="section-tag">Raqobat</div>
+  <h2 class="section-title">Raqobatchilar va bizning ustunligimiz</h2>
+  <p class="section-desc">Global raqobatchilar O'zbekiston bolalari uchun lokallashtirilmagan. Biz mahalliy til, madaniyat va tizimga moslashganmiz.</p>
+  <div class="comp-grid">
+    <div class="comp-card fade-up">
+      <div class="comp-icon">🎓</div>
+      <h4>Duolingo</h4>
+      <p>Global til o'rgatish platformasi. O'zbek tili uchun cheklangan imkoniyatlar.</p>
+      <span class="comp-badge">Global</span>
+    </div>
+    <div class="comp-card fade-up">
+      <div class="comp-icon">📚</div>
+      <h4>Khan Academy</h4>
+      <p>Katta yoshdagilarga mo'ljallangan. Kichik bolalar uchun interaktivligi past.</p>
+      <span class="comp-badge">Global</span>
+    </div>
+    <div class="comp-card fade-up">
+      <div class="comp-icon">🏫</div>
+      <h4>ClassDojo</h4>
+      <p>Sinf boshqaruvi asosiy. AI ta'lim komponentlari kam.</p>
+      <span class="comp-badge">Global</span>
+    </div>
+    <div class="comp-card fade-up">
+      <div class="comp-icon">▶️</div>
+      <h4>YouTube</h4>
+      <p>Passiv kontent. O'rganish interaktiv emas, monitoring yo'q.</p>
+      <span class="comp-badge">Global</span>
+    </div>
+    <div class="comp-card fade-up">
+      <div class="comp-icon">📱</div>
+      <h4>Telegram kanallar</h4>
+      <p>Ta'lim kontenti bor lekin AI monitoring va gamifikatsiya yo'q.</p>
+      <span class="comp-badge">Global</span>
+    </div>
+    <div class="comp-card fade-up">
+      <div class="comp-icon">🇺🇿</div>
+      <h4>Alif24 — Biz</h4>
+      <p>O'zbek tilidagi AI ta'lim. Lokal madaniyat. Gamifikatsiya. Monitoring. CRM.</p>
+      <span class="comp-badge us">✅ Mahalliy</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="section fade-up" id="team">
+  <div class="section-tag">Jamoa</div>
+  <h2 class="section-title">Bizning jamoa</h2>
+  <p class="section-desc">Texnologiya va ta'lim mutaxassislaridan iborat kuchli jamoa.</p>
+  <div class="team-grid">
+    <div class="team-card fade-up">
+      <div class="team-avatar">👨‍💻</div>
+      <h4>Nurali Ishburiyev</h4>
+      <p>Co-founder · Texnologiya va mahsulot</p>
+    </div>
+    <div class="team-card fade-up">
+      <div class="team-avatar">👨‍💼</div>
+      <h4>Hazratqul Abduraufov</h4>
+      <p>Co-founder · Biznes va operatsiyalar</p>
+    </div>
+    <div class="team-card fade-up">
+      <div class="team-avatar">👩‍🏫</div>
+      <h4>Sh. Muxamedova</h4>
+      <p>Boshlang'ich sinf o'qituvchisi · Metodologiya</p>
+    </div>
+    <div class="team-card fade-up">
+      <div class="team-avatar">👩‍🎓</div>
+      <h4>Sh. Abduroxmanova</h4>
+      <p>Bolalar bog'chasi tarbiyachisi · Kontent</p>
+    </div>
+  </div>
+</div>
+
+<!-- THE ASK -->
+<section class="ask-section fade-up" id="ask">
+  <div class="section-tag">The Ask</div>
+  <h2 class="section-title" style="color:#fff;">$100,000 investitsiya qidirilmoqda</h2>
+  <p class="section-desc">O'zbekistonning kelajagi bo'lmish bolalar ta'limiga sarmoya kiriting.</p>
+  <div class="ask-total">$100K</div>
+  <div class="fund-grid">
+    <div class="fund-item">
+      <div class="f-pct">50%</div>
+      <div class="f-amt">$50,000</div>
+      <div class="f-label">Support</div>
+    </div>
+    <div class="fund-item">
+      <div class="f-pct">20%</div>
+      <div class="f-amt">$20,000</div>
+      <div class="f-label">Marketing</div>
+    </div>
+    <div class="fund-item">
+      <div class="f-pct">14%</div>
+      <div class="f-amt">$14,000</div>
+      <div class="f-label">Technology</div>
+    </div>
+    <div class="fund-item">
+      <div class="f-pct">10%</div>
+      <div class="f-amt">$10,000</div>
+      <div class="f-label">Mobil App</div>
+    </div>
+    <div class="fund-item">
+      <div class="f-pct">6%</div>
+      <div class="f-amt">$6,000</div>
+      <div class="f-label">Content</div>
+    </div>
+  </div>
+  <p style="color:rgba(255,255,255,0.7);margin-top:1.5rem;font-size:0.95rem;">
+    Maqsad: Birinchi 6 oyda 2000 bolani jalb qilish va MRR ni $100K+ ga chiqarish
+  </p>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div style="max-width:600px;margin:0 auto;">
+    <div class="section-tag">Bog'lanish</div>
+    <h2 class="section-title">Birgalikda ta'limni o'zgartiramiz!</h2>
+    <p class="section-desc" style="margin:1rem auto 0;">alif24.uz — bolalarning kelajagi uchun eng muhim investitsiya.</p>
+    <div class="cta-btns">
+      <a href="https://youtube.com/shorts/wpyw0sKjJ7E" class="btn-cta-primary">🚀 Demo ko'rish</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">alif<span>24</span>.uz</div>
+  <p>Bolalarning kelajagi — ta'limda 🇺🇿 · Barcha huquqlar himoyalangan © 2024</p>
+</footer>
+
+<script>
+  // Fade-up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
